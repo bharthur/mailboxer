@@ -98,13 +98,13 @@ module Mailboxer
       end
 
       #Replies to the sender of the message in the conversation
-      def reply_to_sender(receipt, reply_body, subject=nil, sanitize_text=true, attachment=nil)
-        reply(receipt.conversation, receipt.message.sender, reply_body, subject, sanitize_text, attachment)
+      def reply_to_sender(receipt, reply_body, notification_code=nil, subject=nil, sanitize_text=true, attachment=nil)
+        reply(receipt.conversation, receipt.message.sender, reply_body, notification_code, subject, sanitize_text, attachment)
       end
 
       #Replies to all the recipients of the message in the conversation
-      def reply_to_all(receipt, reply_body, subject=nil, sanitize_text=true, attachment=nil)
-        reply(receipt.conversation, receipt.message.recipients, reply_body, subject, sanitize_text, attachment)
+      def reply_to_all(receipt, reply_body, notification_code=nil, subject=nil, sanitize_text=true, attachment=nil)
+        reply(receipt.conversation, receipt.message.recipients, reply_body, notification_code, subject, sanitize_text, attachment)
       end
 
       #Replies to all the recipients of the last message in the conversation and untrash any trashed message by messageable
