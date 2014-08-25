@@ -71,7 +71,7 @@ module Mailboxer
           :body              => msg_body,
           :subject           => subject,
           :attachment        => attachment,
-          :notification_code => notification_code
+          :notification_code => notification_code,
           :created_at        => message_timestamp,
           :updated_at        => message_timestamp
         }).build
