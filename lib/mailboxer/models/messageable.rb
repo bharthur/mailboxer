@@ -81,7 +81,7 @@ module Mailboxer
 
       #Basic reply method. USE NOT RECOMENDED.
       #Use reply_to_sender, reply_to_all and reply_to_conversation instead.
-      def reply(conversation, recipients, reply_body, subject=nil, sanitize_text=true, attachment=nil)
+      def reply(conversation, recipients, reply_body, notification_code=nil, subject=nil, sanitize_text=true, attachment=nil)
         subject = subject || "#{conversation.subject}"
         response = Mailboxer::MessageBuilder.new({
           :sender       => self,
@@ -89,7 +89,8 @@ module Mailboxer
           :recipients   => recipients,
           :body         => reply_body,
           :subject      => subject,
-          :attachment   => attachment
+          :attachment   => attachment,
+          :notification_code => notification_code
         }).build
 
         response.recipients.delete(self)
@@ -108,14 +109,14 @@ module Mailboxer
 
       #Replies to all the recipients of the last message in the conversation and untrash any trashed message by messageable
       #if should_untrash is set to true (this is so by default)
-      def reply_to_conversation(conversation, reply_body, subject=nil, should_untrash=true, sanitize_text=true, attachment=nil)
+      def reply_to_conversation(conversation, reply_body, notification_code=nil, subject=nil, should_untrash=true, sanitize_text=true, attachment=nil)
         #move conversation to inbox if it is currently in the trash and should_untrash parameter is true.
         if should_untrash && mailbox.is_trashed?(conversation)
           mailbox.receipts_for(conversation).untrash
           mailbox.receipts_for(conversation).mark_as_not_deleted
         end
 
-        reply(conversation, conversation.last_message.recipients, reply_body, subject, sanitize_text, attachment)
+        reply(conversation, conversation.last_message.recipients, reply_body, notification_code, subject, sanitize_text, attachment)
       end
 
       #Mark the object as read for messageable.
